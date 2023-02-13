@@ -14,7 +14,7 @@ payments:
       amount: 1000000
       whitelists:
         pubkeys:
-        - replace-with-your-pubkey-in-hex
+        - c7eda660a6bc8270530e82b4a7712acdea2e31dc0a56f8dc955ac009efd97c86
 paymentsProcessors:
   zebedee:
     baseURL: https://api.zebedee.io/
