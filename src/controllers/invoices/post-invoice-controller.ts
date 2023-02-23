@@ -1,10 +1,8 @@
-import { Request, Response } from 'express'
-import { path } from 'ramda'
-import { readFileSync } from 'fs'
-
 import { FeeSchedule, Settings } from '../../@types/settings'
 import { fromBech32, toBech32 } from '../../utils/transform'
-import { getPrivateKeyFromSecret, getPublicKey } from '../../utils/event'
+import { getPublicKey, getRelayPrivateKey } from '../../utils/event'
+import { Request, Response } from 'express'
+
 import { createLogger } from '../../factories/logger-factory'
 import { getRemoteAddress } from '../../utils/http'
 import { IController } from '../../@types/controllers'
@@ -12,6 +10,8 @@ import { Invoice } from '../../@types/invoice'
 import { IPaymentsService } from '../../@types/services'
 import { IRateLimiter } from '../../@types/utils'
 import { IUserRepository } from '../../@types/repositories'
+import { path } from 'ramda'
+import { readFileSync } from 'fs'
 
 let pageCache: string
 
@@ -124,9 +124,9 @@ export class PostInvoiceController implements IController {
       return
     }
 
-    const minBalance = currentSettings.limits?.event?.pubkey?.minBalance ?? 0n
+    const minBalance = currentSettings.limits?.event?.pubkey?.minBalance
     const user = await this.userRepository.findByPubkey(pubkey)
-    if (user && user.isAdmitted && minBalance > 0n && user.balance >= minBalance) {
+    if (user && user.isAdmitted && (!minBalance || user.balance >= minBalance)) {
       response
         .status(400)
         .setHeader('content-type', 'text/plain; charset=utf8')
@@ -156,7 +156,7 @@ export class PostInvoiceController implements IController {
       return
     }
 
-    const relayPrivkey = getPrivateKeyFromSecret(process.env.SECRET as string)(relayUrl)
+    const relayPrivkey = getRelayPrivateKey(relayUrl)
     const relayPubkey = getPublicKey(relayPrivkey)
 
     const replacements = {

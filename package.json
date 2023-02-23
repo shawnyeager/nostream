@@ -1,6 +1,6 @@
 {
   "name": "nostream",
-  "version": "1.22.2",
+  "version": "1.22.6",
   "description": "A Nostr relay written in Typescript.",
   "supportedNips": [
     1,
@@ -16,8 +16,10 @@
     26,
     28,
     33,
-    40,
-    111
+    40
+  ],
+  "supportedNipExtensions": [
+    "11a"
   ],
   "main": "src/index.ts",
   "scripts": {
@@ -114,7 +116,7 @@
   },
   "dependencies": {
     "@noble/secp256k1": "1.7.1",
-    "axios": "1.2.3",
+    "axios": "1.2.6",
     "bech32": "2.0.0",
     "body-parser": "1.20.1",
     "debug": "4.3.4",
@@ -124,14 +126,14 @@
     "helmet": "6.0.1",
     "joi": "17.7.0",
     "js-yaml": "4.1.0",
-    "knex": "2.4.1",
-    "pg": "8.8.0",
-    "pg-query-stream": "4.2.4",
+    "knex": "2.4.2",
+    "pg": "8.9.0",
+    "pg-query-stream": "4.3.0",
     "ramda": "0.28.0",
     "redis": "4.5.1",
     "rxjs": "7.8.0",
-    "ws": "8.12.0",
-    "tor-control-ts": "^1.0.0"
+    "tor-control-ts": "^1.0.0",
+    "ws": "8.12.0"
   },
   "config": {
     "commitizen": {

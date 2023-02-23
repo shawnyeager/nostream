@@ -59,8 +59,16 @@ export class App implements IRunnable {
     }
     logCentered(`v${packageJson.version}`, width)
     logCentered(`NIPs implemented: ${packageJson.supportedNips}`, width)
-    logCentered(`Pay-to-relay ${pathEq(['payments', 'enabled'], true, settings) ? 'enabled' : 'disabled'}`, width)
-    logCentered(`Payments provider: ${path(['payments', 'processor'], settings)}`, width)
+    const paymentsEnabled = pathEq(['payments', 'enabled'], true, settings)
+    logCentered(`Pay-to-relay ${paymentsEnabled ? 'enabled' : 'disabled'}`, width)
+    if (paymentsEnabled) {
+      logCentered(`Payments provider: ${path(['payments', 'processor'], settings)}`, width)
+    }
+
+    if (paymentsEnabled && (typeof this.process.env.SECRET !== 'string' || this.process.env.SECRET === '' || this.process.env.SECRET === 'changeme')) {
+      console.error('Please configure the secret using the SECRET environment variable.')
+      this.process.exit(1)
+    }
 
     const workerCount = process.env.WORKER_COUNT
       ? Number(process.env.WORKER_COUNT)
@@ -77,11 +85,13 @@ export class App implements IRunnable {
         WORKER_TYPE: 'worker',
       })
     }
+    logCentered(`${workerCount} client workers started`, width)
 
     createWorker({
       WORKER_TYPE: 'maintenance',
     })
 
+    logCentered('1 maintenance worker started', width)
     const mirrors = settings?.mirroring?.static
 
     if (Array.isArray(mirrors) && mirrors.length) {
@@ -91,10 +101,8 @@ export class App implements IRunnable {
           MIRROR_INDEX: i.toString(),
         })
       }
+      logCentered(`${mirrors.length} static-mirroring worker started`, width)
     }
-
-    logCentered(`${workerCount} client workers started`, width)
-    logCentered('1 maintenance worker started', width)
 
     debug('settings: %O', settings)
 
