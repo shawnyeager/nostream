@@ -56,7 +56,9 @@ limits:
     eventId:
       minLeadingZeroBits: 0
     kind:
-      whitelist: []
+      whitelist:
+      - npub1clk6vc9xhjp8q5cws262wuf2eh4zuvwupft03hy4ttqqnm7e0jrq3upup9
+      - npub1elwpzsul8d9k4tgxqdjuzxp0wa94ysr4zu9xeudrcxe2h3sazqkq5mehan
       blacklist: []
     pubkey:
       minBalance: 0
