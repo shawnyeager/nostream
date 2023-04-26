@@ -59,6 +59,7 @@ limits:
       whitelist:
       - npub1clk6vc9xhjp8q5cws262wuf2eh4zuvwupft03hy4ttqqnm7e0jrq3upup9
       - npub1elwpzsul8d9k4tgxqdjuzxp0wa94ysr4zu9xeudrcxe2h3sazqkq5mehan
+      - npub19pj6f0nc9q6xr26qe3g8m6xe3hwe0d6p6zcvf57cm3kayghjdj0slnlenu
       blacklist: []
     pubkey:
       minBalance: 0
